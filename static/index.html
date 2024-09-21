@@ -1,0 +1,225 @@
+<!doctype html>
+
+<html>
+<head>
+  <title>Stock Search</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Open+Sans:regular,wght@400&display=swap" rel="stylesheet">
+  <link type="text/css" rel="stylesheet" href="/static/style.css">
+</head>
+<body>
+
+  <script src="https://code.highcharts.com/stock/highstock.js"></script>
+  <script src="https://code.highcharts.com/stock/modules/exporting.js"></script>
+  <script src="https://code.highcharts.com/stock/modules/export-data.js"></script>
+  <script src="https://code.highcharts.com/stock/modules/accessibility.js"></script>
+  
+
+  <div id="mainContainer">
+
+    <p id="heading">Stock Search</p>
+    <form id="searchForm" action="/search" method="GET">
+      <div class="search-bar">
+        <button id="searchBtn" class="search-btn" type="submit"><img src="/static/search-solid.svg" alt="Search"></button>
+        <input type="text" id="query" placeholder="Enter Stock Ticker Symbol" name="query" required>
+        <button id="clearBtn" class="clear-btn"><img src="/static/times-solid.svg" alt="Clear"></button>
+      </div>
+    </form>
+
+    <!-- <div id="belowSearch"> -->
+
+      <div id="containerWithoutSearch" style="display: none" class="container-without-search">
+
+        <div id="buttons">
+          <button class = "button" id="toggleCompanyInfo" onclick="showDiv('companyInfo'); highlightButton(this)">Company</button><button class = "button" id="toggleStockSummary" onclick="showDiv('stockSummary'); highlightButton(this)">Stock Summary</button><button class = "button" id="toggleCharts" onclick="showDiv('container'); highlightButton(this)">Charts</button><button class = "button" id="toggleCompanyNews" onclick="showDiv('companyNews'); highlightButton(this)">Latest News</button>
+        </div>
+
+        <div id="companyInfo" class="content tab">
+          <table>
+            <tr>
+              <td colspan="2" class="logo-cell" style="text-align: center;"><img id="companyLogo"></td>
+            </tr>
+            <tr>
+              <td>Company Name</td>
+              <td id="companyName"></td>
+            </tr>
+            <tr>
+              <td>Stock Ticker Symbol</td>
+              <td id="stockTickerSymbol"></td>
+            </tr>
+            <tr>
+              <td>Stock Exchange Code</td>
+              <td id="stockExchangeCode"></td>
+            </tr>
+            <tr>
+              <td>Company IPO Date</td>
+              <td id="companyIpoDate"></td>
+            </tr>
+            <tr>
+              <td>Category</td>
+              <td id="category"></td>
+            </tr>
+          </table>
+        </div>
+
+
+        <div id="stockSummary" class="content tab">
+          <table>
+            <tr>
+              <td>Stock Ticker Symbol</td>
+              <td id="stockTickerSymbol_summary"></td>
+            </tr>
+            <tr>
+              <td>Trading Day</td>
+              <td id="tradingDay"></td>
+            </tr>
+            <tr>
+              <td>Previous Closing Price</td>
+              <td id="previousClosingPrice"></td>
+            </tr>
+            <tr>
+              <td>Opening Price</td>
+              <td id="openingPrice"></td>
+            </tr>
+            <tr>
+              <td>High Price</td>
+              <td id="highPrice"></td>
+            </tr>
+            <tr>
+              <td>Low Price</td>
+              <td id="lowPrice"></td>
+            </tr>
+            <tr>
+              <td>Change</td>
+              <td id="change">
+                <span id="changeText"></span>
+                <img id="changeImg" class="arrow-img">
+              </td>
+            </tr>
+            <tr>
+              <td>Change Percent</td>
+              <td id="changePercent">
+                <span id="changePercentText"></span>
+                <img id="changePercentImg" class="arrow-img">
+              </td>
+            </tr>
+          </table>
+          <br>
+          <br>
+          <div class="recommendation-trends">
+            <span id="strongSellText">Strong<br> Sell</span>
+            <div class="box strong-sell" id="strong-sell"></div>
+            <div class="box sell" id="sell"></div>
+            <div class="box hold" id="hold"></div>
+            <div class="box buy" id="buy"></div>
+            <div class="box strong-buy" id="strong-buy"></div>
+            <span id="strongBuyText">Strong<br> Buy</span>
+          </div>
+          <br>
+          <div>Recommendation Trends</div>
+        </div>
+
+          
+        <div id="container" class="content">Charts</div>
+
+
+        <div id="companyNews" class="content">
+          <div id="companyNews0" class="companyNewsDiv">
+            <table class="tab-company-news">
+              <tr>
+                <td rowspan="5"><img id="companyNewsImage0" class="news-img"></img></td>
+              </tr>
+              <tr>
+                <td id="title0" class="news-title"></td>
+              </tr>
+              <tr>
+                <td id="date0"></td>
+              </tr>
+              <tr>
+                <td><a id="linkToOriginalPost0" target="_blank">See Original Post</a></td>
+              </tr>
+            </table>
+          </div>
+
+          <div id="companyNews1" class="companyNewsDiv">
+            <table class="tab-company-news">
+              <tr>
+                <td rowspan="5"><img id="companyNewsImage1" class="news-img"></img></td>
+              </tr>
+              <tr>
+                <td id="title1" class="news-title"></td>
+              </tr>
+              <tr>
+                <td id="date1"></td>
+              </tr>
+              <tr>
+                <td><a id="linkToOriginalPost1" target="_blank">See Original Post</a></td>
+              </tr>
+            </table>
+          </div>
+
+          <div id="companyNews2" class="companyNewsDiv">
+            <table class="tab-company-news">
+              <tr>
+                <td rowspan="5"><img id="companyNewsImage2" class="news-img"></img></td>
+              </tr>
+              <tr>
+                <td id="title2" class="news-title"></td>
+              </tr>
+              <tr>
+                <td id="date2"></td>
+              </tr>
+              <tr>
+                <td><a id="linkToOriginalPost2" target="_blank">See Original Post</a></td>
+              </tr>
+            </table>
+          </div>
+
+          <div id="companyNews3" class="companyNewsDiv">
+            <table class="tab-company-news">
+              <tr>
+                <td rowspan="5"><img id="companyNewsImage3" class="news-img"></img></td>
+              </tr>
+              <tr>
+                <td id="title3" class="news-title"></td>
+              </tr>
+              <tr>
+                <td id="date3"></td>
+              </tr>
+              <tr>
+                <td><a id="linkToOriginalPost3" target="_blank">See Original Post</a></td>
+              </tr>
+            </table>
+          </div>
+
+          <div id="companyNews4" class="companyNewsDiv">
+            <table class="tab-company-news">
+              <tr>
+                <td rowspan="5"><img id="companyNewsImage4" class="news-img"></img></td>
+              </tr>
+              <tr>
+                <td id="title4" class="news-title"></td>
+              </tr>
+              <tr>
+                <td id="date4"></td>
+              </tr>
+              <tr>
+                <td><a id="linkToOriginalPost4" target="_blank">See Original Post</a></td>
+              </tr>
+            </table>
+          </div>
+        </div>
+
+      </div>
+
+      <div id="errorDiv" style="display: none" class="container-without-search">Error: No record has been found, please enter a valid symbol</div>
+
+    <!-- </div> -->
+
+  </div>
+
+  <script src="/static/script.js"></script>
+
+</body>
+</html>
